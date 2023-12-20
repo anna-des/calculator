@@ -3,26 +3,26 @@
 SimpleArith::SimpleArith(const std::vector<std::string> &v)
 {
     for (auto &s : v){
-        infix_v.push_back(s);
+        infixV_.push_back(s);
     }
 }
 
-Ops SimpleArith::label_ops(const std::string &s){
+Ops SimpleArith::labelOps(const std::string &s){
     if (s == "^"){
-        return Exp;
+        return Ops::Exp;
     }
     if (s == "*"){
-        return Mul;
+        return Ops::Mul;
     }
     if (s == "/"){
-        return Div;
+        return Ops::Div;
     }
     if (s == "+"){
-        return Add;
+        return Ops::Add;
     }
     
     // return Sub as default
-    return Sub;
+    return Ops::Sub;
 }
 
 int SimpleArith::prec(const std::string &s){ // precedence of operators
@@ -37,14 +37,14 @@ int SimpleArith::prec(const std::string &s){ // precedence of operators
     }
 }
 
-void SimpleArith::infix_to_postfix(){
+void SimpleArith::infixToPostfix(){
     std::stack<std::string> st;
     
-    for (auto &s : infix_v){
+    for (auto &s : infixV_){
         
         // if element is number, add to postfix_v
         if (s != "+" && s != "-" && s != "*" && s != "/" && s != "^" && s != "(" && s != ")"){
-            postfix_v.push_back(s);
+            postfixV_.push_back(s);
             
         // if element is left parenthesis or bracket,
         // push to stack
@@ -56,7 +56,7 @@ void SimpleArith::infix_to_postfix(){
         // left parenthesis or bracket is encountered
         } else if (s == ")" || s == "]" || s == "}"){
             while (st.top() != "(" && st.top() != "[" && st.top() != "{"){
-                postfix_v.push_back(st.top());
+                postfixV_.push_back(st.top());
                 st.pop();
             }
             st.pop();
@@ -66,7 +66,7 @@ void SimpleArith::infix_to_postfix(){
         // on top of stack
         } else {
             while (!st.empty() && prec(s) <= prec(st.top())){
-                postfix_v.push_back(st.top());
+                postfixV_.push_back(st.top());
                 st.pop();
             }
             st.push(s);
@@ -75,12 +75,12 @@ void SimpleArith::infix_to_postfix(){
     
     // pop all remaining elements from stack
     while (!st.empty()){
-        postfix_v.push_back(st.top());
+        postfixV_.push_back(st.top());
         st.pop();
     }
     
     // print
-    to_string();
+    toString();
 }
 
 void SimpleArith::calculate(){
@@ -88,12 +88,12 @@ void SimpleArith::calculate(){
     std::cout << "Calling infix_to_postfix function...\n";
     
     // convert infix to postfix
-    infix_to_postfix();
+    infixToPostfix();
     
     std::stack<double> st;
     double result = 0.0;
     
-    for (std::string &s : postfix_v){
+    for (std::string &s : postfixV_){
         
         // if element is number, push to stack
         if (s != "+" && s != "-" && s != "*" && s != "/" && s != "^"){
@@ -107,8 +107,8 @@ void SimpleArith::calculate(){
             double val2 = st.top();
             st.pop();
             
-            switch(label_ops(s)){
-            case Exp:
+            switch(labelOps(s)){
+            case Ops::Exp:
                 std::cout << "\nExponent found -> Val1: " << val1 << " Val2: " << val2;
                 result = val2;
                 for (int n = 0; n < val1 - 1; n++){
@@ -117,19 +117,19 @@ void SimpleArith::calculate(){
                 std::cout << "\nResult of " << val2 << " to the " << val1 << " power: " << result << ". Pushing onto stack...";
                 st.push(result);
                 break;
-            case Mul:
+            case Ops::Mul:
                 std::cout << "\nMultiplication request detected...";
                 st.push(val2 * val1);
                 break;
-            case Div:
+            case Ops::Div:
                 std::cout << "\nDivision request detected...";
                 st.push(val2 / val1);
                 break;
-            case Add:
+            case Ops::Add:
                 std::cout << "\nAddition request detected...";
                 st.push(val2 + val1);
                 break;
-            case Sub:
+            case Ops::Sub:
                 std::cout << "\nSubtraction request detected...";
                 st.push(val2 - val1);
                 break;
@@ -139,19 +139,19 @@ void SimpleArith::calculate(){
             }
         }
     }
-    output = st.top();
-    std::cout << "\n\nFinal Result: " << output;
+    output_ = st.top();
+    std::cout << "\n\nFinal Result: " << output_;
 }
 
-void SimpleArith::to_string(){
+void SimpleArith::toString(){
     std::cout << "Infix expression: ";
-    for (const std::string &s : infix_v){
+    for (const std::string &s : infixV_){
         std::cout << s << " ";
     }
     std::cout << "\nPostfix expression: ";
     
-    if (!postfix_v.empty()){
-        for (const std::string &s : postfix_v){
+    if (!postfixV_.empty()){
+        for (const std::string &s : postfixV_){
             std::cout << s << " ";
         }
         std::cout << "\n";

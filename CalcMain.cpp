@@ -11,7 +11,7 @@
 // GLOBAL VARIABLES
 const char DEC_POINT = '.';
 
-bool is_operator(const char &c){
+bool isOperator(const char &c){
     if (c == '+' || c == '*' || c == '/' || c == '^'){
         return true;
     }
@@ -19,13 +19,13 @@ bool is_operator(const char &c){
 }
 
 // check parentheses, brackets, curly brackets are matching
-// NOTE: used exclusively for check_paren()
-bool ismatching(char x, char y){
+// NOTE: used exclusively for checkParen()
+bool isMatching(char x, char y){
     return ((x == '(' && y == ')') || (x == '{' && y == '}') || (x == '[' && y == ']'));
 }
 
 // check for valid parenthesis, brackets, and curly brackets using a stack
-bool check_paren(const std::string &s){
+bool checkParen(const std::string &s){
     std::stack<char> st;
     
     for (unsigned int i = 0; i < s.length(); i++){
@@ -35,7 +35,7 @@ bool check_paren(const std::string &s){
             if (st.empty()){
                 return false;
             }
-            if (ismatching(st.top(), s[i])){
+            if (isMatching(st.top(), s[i])){
                 st.pop();
             } else {
                 return false;
@@ -47,10 +47,10 @@ bool check_paren(const std::string &s){
 }
 
 // EXCEPTION CHECKER
-bool check_string(const std::string &s){
+bool checkString(const std::string &s){
     
     // if first character is operator (not a negative sign)
-    if (is_operator(s[0])){
+    if (isOperator(s[0])){
         std::cout << "\nFirst element cannot be +,*,/,^. (If you are putting a + to indicate a positive "
                   << "number, that's redundant. Leave that particular + out.\n";
         return false;
@@ -61,7 +61,7 @@ bool check_string(const std::string &s){
         return false;
     }
     // if last character is operator (or negative/minus sign)
-    if (is_operator(s[s.length()-1]) || s[s.length()-1] == '-'){
+    if (isOperator(s[s.length()-1]) || s[s.length()-1] == '-'){
         std::cout << "\nLast element can't be an operator, silly.\n";
     }
     // if first character is decimal point
@@ -75,25 +75,25 @@ bool check_string(const std::string &s){
         return false;
     }
     // if parentheses, square brackets, or curly brackets are not valid
-    if (!check_paren(s)){
+    if (!checkParen(s)){
         std::cout << "\nParentheses, square brackets, or curly brackets not found to be valid.\n";
         return false;
     }
     
-    int dec_counter = 0; // to be used in DECIMAL SECTION
+    int decCounter = 0; // to be used in DECIMAL SECTION
     for (unsigned int i = 0; i < s.length(); i++){
         // if there are 2 or more operators in a row
-        if (i < s.length() - 1 && is_operator(s[i]) && is_operator(s[i+1])){
+        if (i < s.length() - 1 && isOperator(s[i]) && isOperator(s[i+1])){
             std::cout << "\nOperator problem detected. Most likely two or more operators in a row.\n";
             return false;
         }
         // if it is '-' followed by operator 
-        if (i < s.length() - 1 && s[i] == '-' && is_operator(s[i+1])){
+        if (i < s.length() - 1 && s[i] == '-' && isOperator(s[i+1])){
             std::cout << "\nOperator problem detected: operator immediately following a negative/minus sign.\n";
             return false;
         }
         // if it is an operator followed immediately by ')'
-        if (i < s.length() - 1 && is_operator(s[i]) && s[i+1] == ')'){
+        if (i < s.length() - 1 && isOperator(s[i]) && s[i+1] == ')'){
             std::cout << "\nYou can't place a right parenthesis right after an operator, silly.\n";
             return false;
         }
@@ -108,13 +108,13 @@ bool check_string(const std::string &s){
         // DECIMAL SECTION
         
         // ensuring against repeated decimals in one number, i.e. 1.2.3.4
-        if (dec_counter > 0 && s[i] == DEC_POINT){
+        if (decCounter > 0 && s[i] == DEC_POINT){
             std::cout << "\nDecimal error detected.\n";
             return false;
-        } else if (dec_counter == 0 && s[i] == DEC_POINT){
-            dec_counter++;
-        } else if (dec_counter > 0 && (is_operator(s[i]) || s[i] == '-')){
-            dec_counter--;
+        } else if (decCounter == 0 && s[i] == DEC_POINT){
+            decCounter++;
+        } else if (decCounter > 0 && (isOperator(s[i]) || s[i] == '-')){
+            decCounter--;
         }
         // if there is no number immediately following decimal point
         if (s[i] == DEC_POINT && !std::isdigit(static_cast<unsigned char>(s[i+1])) ){
@@ -126,7 +126,7 @@ bool check_string(const std::string &s){
 }
 
 // get string input
-std::string get_string_input(){
+std::string getStringInput(){
     // get input
     std::string s = "";
     std::cin.clear();
@@ -138,7 +138,7 @@ std::string get_string_input(){
     s.erase(std::remove(s.begin(), s.end(), ' '), s.end());
 
     // if input fails checks, continue to prompt until correct input is given
-    while (!check_string(s) || s == ""){
+    while (!checkString(s) || s == ""){
         std::cout << "Try again.\nPlease enter string:\n";
         std::getline(std::cin, s);
     }
@@ -148,7 +148,7 @@ std::string get_string_input(){
 }
 
 // convert input string from user to string vector (with concatenated digits)
-std::vector<std::string> initial_vect_insert(std::string s){
+std::vector<std::string> initialVectInsert(std::string s){
     std::vector<std::string> v;
     
     std::string temp = "";
@@ -199,7 +199,7 @@ std::vector<std::string> initial_vect_insert(std::string s){
 }
 
 // print vector
-void print_vect(std::vector<std::string> &v){
+void printVect(std::vector<std::string> &v){
     for (const std::string &s : v){
         std::cout << s << " ";
     }
@@ -224,17 +224,17 @@ int menu(){
 }
 
 // 0. Quit Program
-void program_end(){
+void programEnd(){
     std::cout << "\n\n-----------Thank you for using my Calculator.-----------\n";
 }
 
 // 1. Simple Arithmetic
-void option_one(){
-    std::vector<std::string> v(initial_vect_insert(get_string_input()));
+void optionOne(){
+    std::vector<std::string> v(initialVectInsert(getStringInput()));
     
     // *****TEMP*********
     std::cout << "\nHere is what you entered: \n";
-    print_vect(v);
+    printVect(v);
     std::cout << "\nSize of vector: " << v.size() << "\n";
     // ******************
     
@@ -255,14 +255,14 @@ int main(int argc, char **argv)
     int choice = menu();    
     while (choice != 0){
         if (choice == 1){
-            option_one();
+            optionOne();
         }
         std::cout << "\n\nReturning to Menu...";
         choice = menu();
     }
     
     
-    program_end();
+    programEnd();
 	return 0;
 }
 
