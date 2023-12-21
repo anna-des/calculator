@@ -62,7 +62,7 @@ bool checkString(const std::string &s){
     }
     // if last character is operator (or negative/minus sign)
     if (isOperator(s[s.length()-1]) || s[s.length()-1] == '-'){
-        std::cout << "\nLast element can't be an operator, silly.\n";
+        std::cout << "\nLast element can't be an operator.\n";
     }
     // if first character is decimal point
     if (s[0] == DEC_POINT){
@@ -71,7 +71,7 @@ bool checkString(const std::string &s){
     }
     // if last character is decimal point
     if (s[s.length()-1] == DEC_POINT){
-        std::cout << "\nLast element can't be a decimal point, silly.\n";
+        std::cout << "\nLast element can't be a decimal point.\n";
         return false;
     }
     // if parentheses, square brackets, or curly brackets are not valid
@@ -94,7 +94,7 @@ bool checkString(const std::string &s){
         }
         // if it is an operator followed immediately by ')'
         if (i < s.length() - 1 && isOperator(s[i]) && s[i+1] == ')'){
-            std::cout << "\nYou can't place a right parenthesis right after an operator, silly.\n";
+            std::cout << "\nYou can't place a right parenthesis right after an operator.\n";
             return false;
         }
         // if there is no preceding number before given decimal point
