@@ -5,7 +5,6 @@
 #include <stack> // stack, push, pop, top
 #include <string> 
 #include <vector>
-#include <map>
 
 enum class Ops {Exp, Mul, Div, Add, Sub}; // exponent, multiplication, division, addition, subtraction
 
