@@ -24,7 +24,7 @@ bool isMatching(char x, char y){
     return ((x == '(' && y == ')') || (x == '{' && y == '}') || (x == '[' && y == ']'));
 }
 
-// check for valid parenthesis, brackets, and curly brackets using a stack
+// check for valid parentheses, brackets, and curly brackets using a stack
 bool checkParen(const std::string &s){
     std::stack<char> st;
     

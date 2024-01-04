@@ -1,8 +1,6 @@
 #ifndef SIMPLEARITH_HPP
 #define SIMPLEARITH_HPP
 
-#include <iostream> // cout
-#include <stack> // stack, push, pop, top
 #include <string> 
 #include <vector>
 

@@ -1,5 +1,11 @@
 #include "SimpleArith.hpp"
 
+#include <iostream> // cout
+#include <stack> // stack, push, pop, top
+#include <string> 
+#include <vector>
+#include <cstdlib> // abs
+
 SimpleArith::SimpleArith(const std::vector<std::string> &v)
 {
     for (auto &s : v){
@@ -42,7 +48,7 @@ void SimpleArith::infixToPostfix(){
     
     for (auto &s : infixV_){
         
-        // if element is number, add to postfix_v
+        // if element is number, add to postfixV_
         if (s != "+" && s != "-" && s != "*" && s != "/" && s != "^" && s != "(" && s != ")"){
             postfixV_.push_back(s);
             
@@ -52,7 +58,7 @@ void SimpleArith::infixToPostfix(){
             st.push(s);
             
         // if element is right parenthesis or bracket,
-        // pop and add to postfix_v from stack until
+        // pop and add to postfixV_ from stack until
         // left parenthesis or bracket is encountered
         } else if (s == ")" || s == "]" || s == "}"){
             while (st.top() != "(" && st.top() != "[" && st.top() != "{"){
@@ -111,9 +117,27 @@ void SimpleArith::calculate(){
             case Ops::Exp:
                 std::cout << "\nExponent found -> Val1: " << val1 << " Val2: " << val2;
                 result = val2;
-                for (int n = 0; n < val1 - 1; n++){
-                    result *= val2;
-                }
+
+                // if exponent is whole number
+                if (val1 == static_cast<int>(val1)){
+                    for (int n = 0; n < abs(static_cast<int>(val1)) - 1; n++){
+                        result *= val2;
+                    }
+                    // if exponent is negative 
+                    if (val1 < 0){
+                        result = 1/result;
+                    }
+                // else if exponent is decimal
+                } else {
+                    // if exponent is positive 
+                    if (val1 > 0.0){
+                        // TODO ************************
+                    // else if exponent is negative
+                    } else {
+                        // TODO ************************
+                    }
+                } 
+                
                 std::cout << "\nResult of " << val2 << " to the " << val1 << " power: " << result << ". Pushing onto stack...";
                 st.push(result);
                 break;
