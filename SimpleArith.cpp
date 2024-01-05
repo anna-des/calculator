@@ -87,15 +87,9 @@ void SimpleArith::infixToPostfix(){
         postfixV_.push_back(st.top());
         st.pop();
     }
-    
-    // print
-    toString();
 }
 
 void SimpleArith::calculate(){
-    std::cout << "\n------From Class SimpleArith------\n";
-    std::cout << "Calling infix_to_postfix function...\n";
-    
     // convert infix to postfix
     infixToPostfix();
     
@@ -118,40 +112,32 @@ void SimpleArith::calculate(){
             
             switch(labelOps(s)){
             case Ops::Exp:
-                std::cout << "\nExponent found -> Val1: " << val1 << " Val2: " << val2;
-                
                 result = pow(val2, val1);
-                
-                std::cout << "\nResult of " << val2 << " to the " << val1 << " power: " << std::setprecision(15) << result << ". Pushing onto stack...";
                 st.push(result);
                 break;
             case Ops::Mul:
-                std::cout << "\nMultiplication request detected...";
                 st.push(val2 * val1);
                 break;
             case Ops::Div:
-                std::cout << "\nDivision request detected...";
                 st.push(val2 / val1);
                 break;
             case Ops::Add:
-                std::cout << "\nAddition request detected...";
                 st.push(val2 + val1);
                 break;
             case Ops::Sub:
-                std::cout << "\nSubtraction request detected...";
                 st.push(val2 - val1);
                 break;
             default:
-                std::cout << "\nError. Not a valid operator.\n";
                 break;
             }
         }
     }
     output_ = st.top();
-    std::cout << "\n\nFinal Result: " << std::setprecision(15) << output_;
 }
 
 void SimpleArith::toString(){
+    std::cout << "\n------From Class SimpleArith------\n\n";
+    
     std::cout << "Infix expression: ";
     for (const std::string &s : infixV_){
         std::cout << s << " ";
@@ -164,6 +150,8 @@ void SimpleArith::toString(){
         }
         std::cout << "\n";
     }
+    
+    std::cout << "\nFinal Result: " << std::setprecision(15) << output_;
 }
 
 SimpleArith::~SimpleArith()

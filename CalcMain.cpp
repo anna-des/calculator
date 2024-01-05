@@ -244,7 +244,8 @@ void optionOne(){
         std::cout << "Error: Not enough elements to perform valid operation.\n";
     } else { // at least 3 elements needed for evaluation
         SimpleArith sa(v);
-        sa.calculate(); 
+        sa.calculate();
+        sa.toString();
     }
 }
 
@@ -261,8 +262,7 @@ int main(int argc, char **argv)
         choice = menu();
     }
     
-    
     programEnd();
-	return 0;
+    return 0;
 }
 
