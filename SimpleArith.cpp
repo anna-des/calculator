@@ -1,10 +1,13 @@
-#include "SimpleArith.hpp"
-
 #include <iostream> // cout
 #include <stack> // stack, push, pop, top
 #include <string> 
 #include <vector>
 #include <cstdlib> // abs
+#include <cmath> // pow
+#include <iomanip> // setprecision
+
+#include "SimpleArith.hpp"
+
 
 SimpleArith::SimpleArith(const std::vector<std::string> &v)
 {
@@ -116,29 +119,10 @@ void SimpleArith::calculate(){
             switch(labelOps(s)){
             case Ops::Exp:
                 std::cout << "\nExponent found -> Val1: " << val1 << " Val2: " << val2;
-                result = val2;
-
-                // if exponent is whole number
-                if (val1 == static_cast<int>(val1)){
-                    for (int n = 0; n < abs(static_cast<int>(val1)) - 1; n++){
-                        result *= val2;
-                    }
-                    // if exponent is negative 
-                    if (val1 < 0){
-                        result = 1/result;
-                    }
-                // else if exponent is decimal
-                } else {
-                    // if exponent is positive 
-                    if (val1 > 0.0){
-                        // TODO ************************
-                    // else if exponent is negative
-                    } else {
-                        // TODO ************************
-                    }
-                } 
                 
-                std::cout << "\nResult of " << val2 << " to the " << val1 << " power: " << result << ". Pushing onto stack...";
+                result = pow(val2, val1);
+                
+                std::cout << "\nResult of " << val2 << " to the " << val1 << " power: " << std::setprecision(15) << result << ". Pushing onto stack...";
                 st.push(result);
                 break;
             case Ops::Mul:
@@ -164,7 +148,7 @@ void SimpleArith::calculate(){
         }
     }
     output_ = st.top();
-    std::cout << "\n\nFinal Result: " << output_;
+    std::cout << "\n\nFinal Result: " << std::setprecision(15) << output_;
 }
 
 void SimpleArith::toString(){
